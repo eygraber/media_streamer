@@ -16,7 +16,6 @@
 
 package com.customprogrammingsolutions.MediaStreamer;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -40,11 +39,12 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 	public static final int AUDIO_FOCUS_DENIED_ERROR = 0;
 	public static final int MEDIA_PLAYER_ERROR = 1;
 	
-	public static final int NOTIFICATION_ID = 0;
+	public static final int NOTIFICATION_ID = 1;
 
 	
 	private MediaPlayer mMediaPlayer;
 	private static boolean isPlaying = false;
+	private static boolean isPreparing = false;
 	private static boolean isStreamError = false;
 	
 	private static String urlToStream = "";
@@ -96,6 +96,12 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
         	
         	stop();
         }
+        else if(intent.getAction() == MainActivity.CANCEL_PLAYBACK_INTENT){
+        	Log.i(TAG, "MediaStreamerService.onStartCommand() - Received cancel playback intent");
+        	
+        	stop();
+        	sendBroadcast(new Intent(MainActivity.STOPPED_PLAYBACK_INTENT));
+        }
         else if(intent.getAction() == MainActivity.KILL_SERVICE_INTENT){
         	Log.i(TAG, "MediaStreamerService.onStartCommand() - Received kill intent");
         	
@@ -107,6 +113,9 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 	
 	private void play(){
 		Log.i(TAG, "MediaStreamerService.play()");
+		
+		isPreparing = true;
+        startNotification();
 		
 		if(!requestAudioFocus()){
 			Log.i(TAG, "MediaStreamerService.play() - AudioFocus request denied");
@@ -153,6 +162,7 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 	public void onPrepared(MediaPlayer mp) {
 		try{
         	mMediaPlayer.start();
+        	isPreparing = false;
 		} catch (Exception e){
     		Log.e(TAG, "MediaStreamerService.play() - onPreparedProxy - Error starting the media player", e);
     		stop();
@@ -177,7 +187,15 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 		contentView.setImageViewResource(R.id.notification_icon, R.drawable.notification_icon);
 		contentView.setTextViewText(R.id.notification_title, getString(R.string.notification_title));
 		contentView.setTextViewText(R.id.notification_text, urlToStream);
-		if(isPlaying){
+		if(isPreparing){
+			contentView.setImageViewResource(R.id.media_state_indicator_icon, R.drawable.notification_playback_loading);
+			contentView.setOnClickPendingIntent(R.id.media_state_indicator_icon, PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0));
+		}
+		else if(isStreamError){
+			contentView.setImageViewResource(R.id.media_state_indicator_icon, R.drawable.notification_playback_error);
+			contentView.setOnClickPendingIntent(R.id.media_state_indicator_icon, PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
+		}
+		else if(isPlaying){
 			contentView.setImageViewResource(R.id.media_state_indicator_icon, R.drawable.stop_button);
 			PendingIntent stopIntentPending = PendingIntent.getService(this, 0, new Intent(MainActivity.STOP_INTENT), PendingIntent.FLAG_CANCEL_CURRENT);
 			contentView.setOnClickPendingIntent(R.id.media_state_indicator_icon, stopIntentPending);
@@ -219,8 +237,10 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		Log.e(TAG, "Error occurred while playing audio. What = " + what + " - Extra = " + extra);
+		isPreparing = false;
 		stop();
 		notifyStreamError(MEDIA_PLAYER_ERROR);
+		startNotification();
 		return false;
     }
 	
@@ -233,6 +253,8 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 		Log.i(TAG, "MediaStreamerService.stop() - Just dropping by");
 		if(isPlaying)
     		isPlaying = false;
+		
+		isPreparing = false;
 
     	if (mMediaPlayer != null) {
             try{
