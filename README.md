@@ -1,1 +1,1 @@
-This is the placeholder for the readme.
+A audio streaming app for Android
