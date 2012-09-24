@@ -33,7 +33,7 @@
     	android:layout_width="0dip"
     	android:layout_height="fill_parent"
     	android:orientation="vertical"
-    	android:layout_weight="20" >
+    	android:layout_weight="50" >
     	
         <TextView android:id="@+id/notification_title"
         	android:layout_width="wrap_content"
@@ -48,10 +48,10 @@
 	</LinearLayout>
     
     <ImageView android:id="@+id/media_state_indicator_icon"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/notificationMediaStateIndicatorWidth"
         android:layout_height="fill_parent"
         android:contentDescription="@string/media_state_indicator_desc"
-		android:layout_weight="1"
+		android:layout_weight="0"
         android:background="@null" />
     
     <TextView
@@ -59,13 +59,15 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="7dp"
         android:layout_marginTop="7dp"
-        android:background="#909090" />
+        android:background="#909090"
+        android:layout_weight="0"
+        android:layout_marginRight="10dp" />
     
     <ImageView android:id="@+id/close_notification_icon"
    	    android:layout_width="wrap_content"
        	android:layout_height="fill_parent" 
        	android:contentDescription="@string/close_notification_icon_content_desc"
-       	android:layout_weight="2"
+       	android:layout_weight="0"
        	android:src="@android:drawable/ic_menu_close_clear_cancel"
        	android:background="@null" />
    	    
