@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="notificationMediaStateIndicatorWidth">65dp</dimen>
+    <dimen name="notificationMediaStateIndicatorWidth">50dp</dimen>
 </resources>
