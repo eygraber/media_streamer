@@ -55,7 +55,8 @@
     
     <string name="media_player_error">Error playing stream!</string>
     <string name="audio_focus_denied_error">System is preventing playback of stream. Please try again.</string>
-    <string name="error_empty_url">You must enter a valid URL</string>
+    <string name="error_empty_url">URL cannot be empty</string>
+    <string name="error_invalid_url">URL must start with http:// or rtsp:// (other protocols will be supported in the future)</string>
     
     <string name="http_prefix">http://</string>
     <string name="connection_timeout_msg">The connection timed out. Please try again later</string>
