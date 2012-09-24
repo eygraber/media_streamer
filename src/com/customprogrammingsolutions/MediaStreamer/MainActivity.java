@@ -189,6 +189,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener, L
 					Toast.makeText(MainActivity.this, getString(R.string.error_empty_url), Toast.LENGTH_SHORT).show();
 					return;
 				}
+				else if(!urlToStream.startsWith("http://") && !urlToStream.startsWith("rtsp://")){
+					Toast.makeText(MainActivity.this, getString(R.string.error_invalid_url), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				
 				//reset this here for the loop in WaitForStreamConnectionTask
 				receivedError = false;
