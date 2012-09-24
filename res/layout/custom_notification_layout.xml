@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+   Copyright 2012 Eliezer Graber (Custom Programming Solutions)
+ 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
+    
+    <ImageView android:id="@+id/notification_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/notification_icon_content_desc"
+        android:src="@drawable/notification_icon"
+        android:layout_marginRight="10dp"
+        android:background="@null" />
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/inner_notification_layout"
+    	android:layout_width="0dip"
+    	android:layout_height="fill_parent"
+    	android:orientation="vertical"
+    	android:layout_weight="20" >
+    	
+        <TextView android:id="@+id/notification_title"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	style="@style/NotificationTitle" />
+    
+    	<TextView android:id="@+id/notification_text"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	style="@style/NotificationText" />
+    	
+	</LinearLayout>
+    
+    <ImageView android:id="@+id/media_state_indicator_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/media_state_indicator_desc"
+		android:layout_weight="1"
+        android:background="@null" />
+    
+    <TextView
+    	android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="7dp"
+        android:background="#909090" />
+    
+    <ImageView android:id="@+id/close_notification_icon"
+   	    android:layout_width="wrap_content"
+       	android:layout_height="fill_parent" 
+       	android:contentDescription="@string/close_notification_icon_content_desc"
+       	android:layout_weight="2"
+       	android:src="@android:drawable/ic_menu_close_clear_cancel"
+       	android:background="@null" />
+   	    
+    
+</LinearLayout>
