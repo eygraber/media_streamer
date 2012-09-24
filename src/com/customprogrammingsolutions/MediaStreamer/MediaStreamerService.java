@@ -203,8 +203,11 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 
 		builder.setAutoCancel(false);
 		
-		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.notify(NOTIFICATION_ID, builder.build());
+		startForeground(NOTIFICATION_ID, builder.build());
+	}
+	
+	private void stopNotification(){
+		stopForeground(true);
 	}
 	
 	private void addToRecents(){
@@ -241,10 +244,8 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
             		boolean persistentNotification = prefs.getBoolean(getString(R.string.pref_notification_key), Boolean.parseBoolean(getString(R.string.pref_notification_default))); 
             		if(persistentNotification)
             			startNotification();
-            		else{
-            			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            			nm.cancel(NOTIFICATION_ID);
-            		}
+            		else
+					    stopNotification();
             	}
             }
             catch(Exception e){
@@ -302,8 +303,8 @@ public class MediaStreamerService extends Service implements MediaPlayer.OnPrepa
 		
 		unregisterReceiver(audioTooNoisyReceiver);
 		
-		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(NOTIFICATION_ID);
+		stopNotification();
+		
     }
 
 	@Override
