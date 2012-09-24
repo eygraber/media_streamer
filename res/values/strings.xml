@@ -33,7 +33,7 @@
     <string name="favorite_dialog_url">URL</string>
     <string name="favorite_dialog_url_hint">Enter a URL</string>
     <string name="favorite_dialog_positive_label_add">Add</string>
-    <string name="favorite_dialog_positive_label_edit">Edit</string>
+    <string name="favorite_dialog_positive_label_edit">Save</string>
     <string name="favorite_dialog_negative_label">Cancel</string>
     <string name="favorite_dialog_name_error">That name is already in use; please use another</string>
     <string name="favorite_dialog_url_error">That url is already in use; please use another</string>
