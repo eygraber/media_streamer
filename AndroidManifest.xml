@@ -48,6 +48,7 @@
             <intent-filter>
                 <action android:name="com.customprogrammingsolutions.MediaStreamer.PLAY" />
                 <action android:name="com.customprogrammingsolutions.MediaStreamer.STOP" />
+                <action android:name="com.customprogrammingsolutions.MediaStreamer.CANCEL_PLAYBACK" />
                 <action android:name="com.customprogrammingsolutions.MediaStreamer.KILL_SERVICE" />
             </intent-filter>
         </service>
