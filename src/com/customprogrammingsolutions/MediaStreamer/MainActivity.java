@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -57,13 +59,14 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity implements OnClickListener, LoaderManager.LoaderCallbacks<Cursor>{
 	/*package*/ final static String PLAY_INTENT = "com.customprogrammingsolutions.MediaStreamer.PLAY";
 	/*package*/ final static String STOP_INTENT = "com.customprogrammingsolutions.MediaStreamer.STOP";
+	/*package*/ final static String CANCEL_PLAYBACK_INTENT = "com.customprogrammingsolutions.MediaStreamer.CANCEL_PLAYBACK";
 	
 	/*package*/ final static String KILL_SERVICE_INTENT = "com.customprogrammingsolutions.MediaStreamer.KILL_SERVICE";
 	
 	/*package*/ final static String URL_EXTRA = "com.customprogrammingsolutions.MediaStreamer.URL_EXTRA";
 	/*package*/ final static String ERROR_EXTRA = "com.customprogrammingsolutions.MediaStreamer.ERROR_EXTRA";
 
-	/*package*/ final static String STARTED_PLAYBACK_INTENT = "com.customprogrammingsolutions.MediaStreamer.STARTED_PLAYING";
+	/*package*/ final static String STARTED_PLAYBACK_INTENT = "com.customprogrammingsolutions.MediaStreamer.STARTED_PLAYBACK";
 	/*package*/ final static String PLAYBACK_TIMEOUT_INTENT = "com.customprogrammingsolutions.MediaStreamer.PLAYBACK_TIMEOUT";
 	/*package*/ final static String STOPPED_PLAYBACK_INTENT = "com.customprogrammingsolutions.MediaStreamer.STOPPED_PLAYBACK";
 	
@@ -138,7 +141,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener, L
         pd.setTitle("Connecting");
         pd.setMessage("Connecting to stream...");
         pd.setIndeterminate(true);
-        pd.setCancelable(false);
+        pd.setCancelable(true);
+        pd.setOnCancelListener(new OnCancelListener(){
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				startService(new Intent(CANCEL_PLAYBACK_INTENT));
+			}
+        	
+        });
         
         IntentFilter myActions = new IntentFilter();
         myActions.addAction(ERROR_INTENT);
@@ -198,15 +209,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener, L
     	if(MediaStreamerService.isPlaying()){
 			mediaStateButton.setImageResource(R.drawable.stop_button);
 			isPlayDrawable = false;
+			String urlToStream = MediaStreamerService.getUrlToStream();
+			if(urlToStream == null)
+				urlToStream = "";
+			urlBar.setText(urlToStream);
 		}
 		else{
 			mediaStateButton.setImageResource(R.drawable.play_button);
 			isPlayDrawable = true;
 		}
-    	String urlToStream = MediaStreamerService.getUrlToStream();
-		if(urlToStream == null)
-			urlToStream = "";
-		urlBar.setText(urlToStream);
     }
     
     @Override
