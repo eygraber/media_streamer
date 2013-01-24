@@ -232,6 +232,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, L
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(pd != null) {
+        	if(pd.isShowing()) {
+        		pd.dismiss();
+        	}
+        }
         unregisterReceiver(mReceiver);
     }
 
